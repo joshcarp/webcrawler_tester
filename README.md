@@ -15,6 +15,7 @@ and then add the following lines:
 ```
 127.0.0.1 web1.comp30023
 127.0.0.1 web2.comp30023
+127.0.0.1 web3.comp30023
 ```
 now you can run the program:
 
