@@ -1,10 +1,13 @@
-## Webscraper tester
+# Webscraper tester
 
 
 There are two tests; the "Index of Sample Test-Cases" seen internally and "Custom"
 
-# Main tests; This is a copy of "Index of Sample Test-Cases" that we use on our vms
-## Setup
+## Main tests; This is a copy of "Index of Sample Test-Cases" that we use on our vms
+### Setup
+You must have go installed to run this aswell as a unix based machine (unless you've got docker): 
+https://golang.org/
+
 Edit the hostnames to include our hostnames that we'll be visiting
 `sudo nano /etc/hosts`
 
