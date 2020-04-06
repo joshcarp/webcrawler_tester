@@ -24,7 +24,6 @@ go run main.go
 
 And you'll have a debug log of the endpoints your program hit (add -v to enable printing of the request):
 ```
-
 Visited URL: /mirror/a.html
 Visited URL: /
 Visited URL: /robots.txt
