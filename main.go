@@ -1,31 +1,41 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"net/http/httputil"
 )
 
-var testCases = map[string]string{
-	"/1": "<a href=\"http://localhost/2\">",
-	"/2": "<a href=\"localhost/3\">",
-	"/3": "<a href=\"/4\">",
-	"/4": "<a class=\"\" href=\"/1\">",
+type Server struct {
+	http.Handler
+	verbose bool
 }
 
+
 func main() {
-	http.HandleFunc("/", HelloServer)
-	err := http.ListenAndServe(":80", nil)
+	s := Server{Handler: http.FileServer(http.Dir("./web1.comp30023"))}
+
+	// Parse verbose mode
+	flag.BoolVar(&s.verbose, "v", false, "Verbose mode: Prints out request")
+	flag.Parse()
+
+	// Start up a server
+	log.Println("Listening on :80...")
+	err := http.ListenAndServe(":80", s)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func HelloServer(w http.ResponseWriter, r *http.Request) {
-	byts, _ := httputil.DumpRequest(r, true)
-	fmt.Println(string(byts))
-	fmt.Println(r.URL.Path)
-
-	fmt.Fprintf(w, "%s", testCases[r.URL.Path])
+//ServeHTTP writes out debug info to stdout and redirects the request to the filesystem handler
+func (s Server)ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("Visited URL: %s\n",r.URL)
+	if s.verbose{
+		byts, _ := httputil.DumpRequest(r, true)
+		fmt.Printf("Request sent: %s\n\n",string(byts))
+	}
+	// Forward the response onto the filesystem handler
+	s.Handler.ServeHTTP(w,r)
 }
